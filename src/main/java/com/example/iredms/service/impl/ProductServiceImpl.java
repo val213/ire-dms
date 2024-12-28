@@ -1,4 +1,7 @@
 package com.example.iredms.service.impl;
 
-public class ProductServiceImpl {
+import com.example.iredms.service.ProductService;
+
+public class ProductServiceImpl implements ProductService {
+
 }
