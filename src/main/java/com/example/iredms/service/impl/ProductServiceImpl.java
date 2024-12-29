@@ -7,10 +7,16 @@ import com.huawei.innovation.rdm.intelligentrobotengineering.delegator.ProductDe
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductCreateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductQueryViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductViewDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+@Service
+@Slf4j
 public class ProductServiceImpl implements ProductService {
+    @Autowired
     private ProductDelegator productDelegator;
 
     @Override
@@ -23,4 +29,6 @@ public class ProductServiceImpl implements ProductService {
         RDMPageVO pageVO = new RDMPageVO(1, 10);
         return productDelegator.query(queryRequestVo, pageVO);
     }
+
+
 }
