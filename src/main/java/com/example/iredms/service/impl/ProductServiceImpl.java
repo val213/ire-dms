@@ -1,6 +1,7 @@
 package com.example.iredms.service.impl;
 
 import com.example.iredms.service.ProductService;
+import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdModifierDTO;
 import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.delegator.ProductDelegator;
@@ -30,5 +31,9 @@ public class ProductServiceImpl implements ProductService {
         return productDelegator.query(queryRequestVo, pageVO);
     }
 
+    @Override
+    public int delete(PersistObjectIdModifierDTO productDeleteRequestDTO) {
+        return productDelegator.delete(productDeleteRequestDTO);
+    }
 
 }

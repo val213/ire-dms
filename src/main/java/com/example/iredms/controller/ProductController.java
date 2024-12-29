@@ -2,15 +2,13 @@ package com.example.iredms.controller;
 
 import com.example.iredms.common.BaseResponse;
 import com.example.iredms.common.ResultUtils;
-import com.example.iredms.dto.ProductDeleteRequestDTO;
 import com.example.iredms.service.ProductService;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductUpdateDTO;
+import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdModifierDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.delegator.ProductDelegator;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductCreateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductQueryViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductViewDTO;
@@ -43,46 +41,46 @@ public class ProductController {
         return ResultUtils.success(productService.create(productCreateDTO));
     }
 
-    /**
-     * 修改产品：点击“修改”按钮，可编辑该产品信息：名称、基本信息、负责人、
-     * 产品阶段字段。（产品阶段只能由管理员修改）
-     */
-    @RequestMapping("/update")
-    public BaseResponse<ProductViewDTO> update(@RequestBody ProductUpdateDTO productUpdateDTO) {
-        return ResultUtils.success(productService.update(productUpdateDTO));
-    }
+//    /**
+//     * 修改产品：点击“修改”按钮，可编辑该产品信息：名称、基本信息、负责人、
+//     * 产品阶段字段。（产品阶段只能由管理员修改）
+//     */
+//    @RequestMapping("/update")
+//    public BaseResponse<ProductViewDTO> update(@RequestBody ProductUpdateDTO productUpdateDTO) {
+//        return ResultUtils.success(productService.update(productUpdateDTO));
+//    }
 
     /**
      * 删除产品：点击“删除”按钮，可删除该产品
      * 注意：仅当部件未被任何产品调用时，方可删除
      */
     @RequestMapping("/delete")
-    public BaseResponse<Boolean> delete(ProductDeleteRequestDTO productDeleteRequestDTO) {
+    public BaseResponse<Integer> delete(PersistObjectIdModifierDTO productDeleteRequestDTO) {
         return ResultUtils.success(productService.delete(productDeleteRequestDTO));
     }
-    /**
-     * 产品详情：点击“查看详情”按钮，可查看该产品信息：产品编号、名称、基本信
-     * 息、负责人、产品阶段、关联蓝图和部件编号。
-     */
-    @RequestMapping("/detail")
-    public String detail() {
-        return ResultUtils.success(productService.detail());
-    }
-    /**
-     * 编辑并展示关联蓝图：可创建删除该产品与蓝图关系（形式自由）
-     * 注意：仅当产品处于概念化和设计阶段时，方可编辑
-     */
-    @RequestMapping("/blueprint")
-    public String blueprint() {
-        return ResultUtils.success(productService.blueprint());
-    }
-
-    /**
-     * 编辑并展示关联部件：可创建删除该产品与部件关系（形式自由）
-     * 注意：仅当产品处于原型开发阶段时，方可编辑
-     */
-    @RequestMapping("/component")
-    public String component() {
-        return ResultUtils.success(productService.component());
-    }
+//    /**
+//     * 产品详情：点击“查看详情”按钮，可查看该产品信息：产品编号、名称、基本信
+//     * 息、负责人、产品阶段、关联蓝图和部件编号。
+//     */
+//    @RequestMapping("/detail")
+//    public String detail() {
+//        return ResultUtils.success(productService.detail());
+//    }
+//    /**
+//     * 编辑并展示关联蓝图：可创建删除该产品与蓝图关系（形式自由）
+//     * 注意：仅当产品处于概念化和设计阶段时，方可编辑
+//     */
+//    @RequestMapping("/blueprint")
+//    public String blueprint() {
+//        return ResultUtils.success(productService.blueprint());
+//    }
+//
+//    /**
+//     * 编辑并展示关联部件：可创建删除该产品与部件关系（形式自由）
+//     * 注意：仅当产品处于原型开发阶段时，方可编辑
+//     */
+//    @RequestMapping("/component")
+//    public String component() {
+//        return ResultUtils.success(productService.component());
+//    }
 }
