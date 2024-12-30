@@ -15,6 +15,7 @@ public class AttributeMapper {
     @Autowired
     private EXADefinitionLinkDelegator exaDefinitionLinkDelegator;
 
+    //根据分类ID获取其属性
     public List<EXADefinitionLinkViewDTO> getAttributeLinkByTargetID(String id) {
         QueryRequestVo queryRequestVo = new QueryRequestVo();
         queryRequestVo.addCondition("target.id", ConditionType.EQUAL,id);

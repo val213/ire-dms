@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface PartService {
     public PartViewDTO CreatePart(PartCreateDTO partCreate);
-    public ArrayList<ClassificationNodeViewDTO> getClassificationList();
     public PartViewDTO updatePart(String id);
     public void deletePart(String id) throws IllegalAccessException;
 }

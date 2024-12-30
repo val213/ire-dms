@@ -15,6 +15,7 @@ public class AttributeServiceImpl implements AttributeService {
     @Autowired
     AttributeMapper attributeMapper;
 
+    //根据分类id获取其属性
     @Override
     public ArrayList<EXADefinitionViewDTO> getClassificationAttribute(String classificationID) {
         List<EXADefinitionLinkViewDTO> v = attributeMapper.getAttributeLinkByTargetID(classificationID);

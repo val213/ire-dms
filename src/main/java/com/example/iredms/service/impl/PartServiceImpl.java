@@ -24,10 +24,8 @@ public class PartServiceImpl implements PartService {
 
     @Autowired
     PartDelegator partDelegator;
-    @Autowired
-    private ClassificationNodeDelegator classificationNodeDelegator;
 
-
+    //创建部件
     @Override
     public PartViewDTO CreatePart(PartCreateDTO partCreate) {
         PartMasterCreateDTO pmcd = new PartMasterCreateDTO();
@@ -38,25 +36,19 @@ public class PartServiceImpl implements PartService {
         return createPart;
     }
 
-    @Override
-    public ArrayList<ClassificationNodeViewDTO> getClassificationList() {
-        QueryRequestVo queryRequestVo = new QueryRequestVo();
-        queryRequestVo.addCondition("businessCode", ConditionType.LIKE,"");
-        RDMPageVO rdmPageVO = new RDMPageVO(1,Integer.MAX_VALUE);
-        return (ArrayList<ClassificationNodeViewDTO>) classificationNodeDelegator.find(queryRequestVo, rdmPageVO);
-    }
 
+
+    //更新部件
     @Override
     public PartViewDTO updatePart(String id) {
         PartUpdateDTO partUpdateDTO = new PartUpdateDTO();
-
         QueryRequestVo queryRequestVo = new QueryRequestVo();
         queryRequestVo.addCondition("id", ConditionType.EQUAL, id);
-
 
         return null;
     }
 
+    //删除部件
     @Override
     public void deletePart(String id) throws IllegalAccessException {
         if (id == null || id.trim().isEmpty()) {
