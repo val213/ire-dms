@@ -1,9 +1,11 @@
 package com.example.iredms.service;
 
+import com.example.iredms.dto.ProductQueryDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdDecryptDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdModifierDTO;
 import com.huawei.innovation.rdm.coresdk.basic.vo.DeleteByConditionVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
+import com.huawei.innovation.rdm.coresdk.basic.vo.UpdateByConditionVo;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductCreateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductQueryViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductUpdateDTO;
@@ -16,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 public interface ProductService {
-    ProductViewDTO create(@RequestBody ProductCreateDTO productCreateDTO);
-    List<ProductQueryViewDTO> query(@RequestBody QueryRequestVo queryRequestVo);
-    ProductViewDTO update(@RequestBody ProductUpdateDTO productUpdateDTO);
+    Boolean create(@RequestBody ProductViewDTO productViewDTO);
+    List<ProductViewDTO> query(ProductQueryDTO productQueryDTO);
+    ProductViewDTO update(@RequestBody UpdateByConditionVo<ProductUpdateDTO> productUpdateDTO);
     int delete(@RequestBody DeleteByConditionVo deleteByConditionVo);
     ProductViewDTO detail(@RequestBody PersistObjectIdDecryptDTO productDetailRequestDTO);
-    ProductBlueprintLinkViewDTO createProductBlueprintLink(@RequestBody ProductBlueprintLinkCreateDTO productBlueprintLinkCreateDTO);
+    Boolean createProductBlueprintLink(@RequestBody ProductBlueprintLinkViewDTO productBlueprintLinkViewDTO);
     int deleteProductBlueprintLink(@RequestBody DeleteByConditionVo deleteByConditionVo);
-    ProductPartLinkViewDTO createProductPartLink(@RequestBody ProductPartLinkCreateDTO productPartLinkCreateDTO);
+    Boolean createProductPartLink(@RequestBody ProductPartLinkViewDTO productPartLinkViewDTO);
     int deleteProductPartLink(@RequestBody DeleteByConditionVo deleteByConditionVo);
 
 }

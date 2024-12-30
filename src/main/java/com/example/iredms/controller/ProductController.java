@@ -2,11 +2,13 @@ package com.example.iredms.controller;
 
 import com.example.iredms.common.BaseResponse;
 import com.example.iredms.common.ResultUtils;
+import com.example.iredms.dto.ProductQueryDTO;
 import com.example.iredms.service.ProductService;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdDecryptDTO;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdModifierDTO;
 import com.huawei.innovation.rdm.coresdk.basic.enums.ConditionType;
 import com.huawei.innovation.rdm.coresdk.basic.vo.DeleteByConditionVo;
+import com.huawei.innovation.rdm.coresdk.basic.vo.UpdateByConditionVo;
 import com.huawei.innovation.rdm.intelligentrobotengineering.bean.relation.ProductBlueprintLink;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductUpdateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.ProductBlueprintLinkCreateDTO;
@@ -36,9 +38,9 @@ public class ProductController {
      * 本信息、负责人、产品阶段等字段
      */
     @RequestMapping("/query")
-    public BaseResponse<List<ProductQueryViewDTO>> query(@RequestBody QueryRequestVo queryRequestVo) {
-        RDMPageVO pageVO = new RDMPageVO(1, 10);
-        return ResultUtils.success(productService.query(queryRequestVo));
+    public BaseResponse<List<ProductViewDTO>> query(@RequestBody ProductQueryDTO productQueryDTO) {
+        log.info("query：{}", productQueryDTO);
+        return ResultUtils.success(productService.query(productQueryDTO));
     }
 
     /**
@@ -47,8 +49,8 @@ public class ProductController {
      * 产品阶段默认为初始阶段
      */
     @RequestMapping("/create")
-    public BaseResponse<ProductViewDTO> create(@RequestBody ProductCreateDTO productCreateDTO) {
-        return ResultUtils.success(productService.create(productCreateDTO));
+    public BaseResponse<Boolean> create(@RequestBody ProductViewDTO productViewDTO) {
+        return ResultUtils.success(productService.create(productViewDTO));
     }
 
     /**
@@ -56,7 +58,7 @@ public class ProductController {
      * 产品阶段字段。（产品阶段只能由管理员修改）
      */
     @RequestMapping("/update")
-    public BaseResponse<ProductViewDTO> update(@RequestBody ProductUpdateDTO productUpdateDTO) {
+    public BaseResponse<ProductViewDTO> update(@RequestBody UpdateByConditionVo<ProductUpdateDTO> productUpdateDTO) {
         return ResultUtils.success(productService.update(productUpdateDTO));
     }
 
@@ -85,8 +87,8 @@ public class ProductController {
      * 注意：仅当产品处于概念化和设计阶段时，方可编辑
      */
     @RequestMapping("/blueprint/create")
-    public BaseResponse<ProductBlueprintLinkViewDTO> createProductBlueprintLink(@RequestBody ProductBlueprintLinkCreateDTO productBlueprintLinkCreateDTO) {
-        return ResultUtils.success(productService.createProductBlueprintLink(productBlueprintLinkCreateDTO));
+    public BaseResponse<Boolean> createProductBlueprintLink(@RequestBody ProductBlueprintLinkViewDTO productBlueprintLinkViewDTO) {
+        return ResultUtils.success(productService.createProductBlueprintLink(productBlueprintLinkViewDTO));
     }
     @RequestMapping("/blueprint/delete/{id}")
     public BaseResponse<Integer> blueprintDelete(@PathVariable String id) {
@@ -102,8 +104,8 @@ public class ProductController {
      * 注意：仅当产品处于原型开发阶段时，方可编辑
      */
     @RequestMapping("/part/create")
-    public BaseResponse<ProductPartLinkViewDTO> createProductPartLink(@RequestBody ProductPartLinkCreateDTO productPartCreateRequestDTO) {
-        return ResultUtils.success(productService.createProductPartLink(productPartCreateRequestDTO));
+    public BaseResponse<Boolean> createProductPartLink(@RequestBody ProductPartLinkViewDTO productPartViewRequestDTO) {
+        return ResultUtils.success(productService.createProductPartLink(productPartViewRequestDTO));
     }
 
     @RequestMapping("/part/delete/{id}")
