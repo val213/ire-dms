@@ -7,9 +7,11 @@ import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.intelligentrobotengineering.delegator.DesignBlueprintDelegator;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.DesignBlueprintCreateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.DesignBlueprintViewDTO;
+import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.OrderViewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,8 +48,4 @@ public class DesignServiceImpl implements DesignService {
         } else return 0;
     }
 
-    @Override
-    public List<DesignBlueprintViewDTO> queryDesignBlueprints(DesignBlueprintViewDTO designBlueprintViewDTO) {
-        return List;
-    }
 }
