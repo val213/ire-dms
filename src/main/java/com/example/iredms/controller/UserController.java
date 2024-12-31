@@ -3,16 +3,17 @@ package com.example.iredms.controller;
 import com.example.iredms.common.BaseResponse;
 import com.example.iredms.common.ResultUtils;
 import com.example.iredms.service.UserService;
-import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdModifierDTO;
+//import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdModifierDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserCreateDTO;
+//import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserCreateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserQueryViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserUpdateDTO;
+import com.huawei.innovation.rdm.intelligentrobotengineering.bean.enumerate.Authority;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -25,11 +26,18 @@ public class UserController {
     private UserService userService;
 
     /**
+     * 用户登录：使用用户名和密码进行登录操作
+     */
+
+
+    /**
      * 查询用户：可按用户名精确查询，展示注册日期、用户名、电话号码、权限等字段
      */
     @RequestMapping("/query")
     public BaseResponse<List<UserQueryViewDTO>> query(@RequestBody QueryRequestVo queryRequestVo) {
         RDMPageVO pageVO = new RDMPageVO(1, 10);
+
+
         return ResultUtils.success(userService.query(queryRequestVo));
     }
 
@@ -38,19 +46,20 @@ public class UserController {
      //     * （只能由管理员修改）
      //     */
     @RequestMapping("/update")
-    public BaseResponse<UserViewDTO> update_byAdmin(@RequestBody UserUpdateDTO user) {
-
+    public BaseResponse<UserViewDTO> update_byAdmin(@RequestBody UserUpdateDTO user)
+    {
         UserUpdateDTO u = new UserUpdateDTO();
-        if (user.getName()!= null && !user.getName().isEmpty()) {
-            u.setName(user.getName());
+        if(user.getAuthority() == Authority.Admin) {
+            if (user.getName() != null && !user.getName().isEmpty()) {
+                u.setName(user.getName());
+            }
+            if (user.getPhone() != null && !user.getPhone().isEmpty()) {
+                u.setPhone(user.getPhone());
+            }
+            if (user.getAuthority() == Authority.Admin || user.getAuthority() == Authority.Normal) {
+                u.setAuthority(user.getAuthority());
+            }
         }
-        if (user.getPhone()!= null && !user.getPhone().isEmpty()) {
-            u.setPhone(user.getPhone());
-        }
-        if (user.getAuthority()!= null) {
-            u.setAuthority(user.getAuthority());
-        }
-
         return ResultUtils.success(userService.update(user));
     }
 
