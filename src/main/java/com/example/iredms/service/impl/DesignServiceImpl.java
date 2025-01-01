@@ -9,6 +9,7 @@ import com.huawei.innovation.rdm.coresdk.basic.vo.DeleteByConditionVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMResultVO;
+import com.huawei.innovation.rdm.delegate.exception.RdmDelegateException;
 import com.huawei.innovation.rdm.delegate.service.FileDelegatorService;
 import com.huawei.innovation.rdm.intelligentrobotengineering.delegator.DesignBlueprintDelegator;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.DesignBlueprintCreateDTO;
@@ -39,6 +40,7 @@ public class DesignServiceImpl implements DesignService {
     /**
      * 按编号精确查询，展示蓝图编号、蓝图、说明等字段
      */
+    @Override
     public List<DesignBlueprintViewDTO> query(Long id) {
         QueryRequestVo queryRequestVo = new QueryRequestVo();
         if (id!= null) {
@@ -56,17 +58,28 @@ public class DesignServiceImpl implements DesignService {
         }
         return result;
     }
-    public Boolean update(Long id, DesignBlueprintUpdateDTO designBlueprintUpdateDTO) {
+    @Override
+    public Boolean update(DesignBlueprintUpdateDTO designBlueprintUpdateDTO) {
+        log.info("Updating DesignBlueprint with DTO: {}", designBlueprintUpdateDTO);
         if (designBlueprintUpdateDTO == null) {
+            log.error("DesignBlueprintUpdateDTO is null");
             return false;
         }
-        designBlueprintUpdateDTO.setId(id);
-        DesignBlueprintViewDTO designBlueprintViewDTO = designBlueprintDelegator.update(designBlueprintUpdateDTO);
-        return designBlueprintViewDTO != null;
+        try {
+            log.info("Updating DesignBlueprint with DTO: {}", designBlueprintUpdateDTO);
+            DesignBlueprintViewDTO designBlueprintViewDTO = designBlueprintDelegator.update(designBlueprintUpdateDTO);
+            log.info("Update successful, result: {}", designBlueprintViewDTO);
+            return designBlueprintViewDTO != null;
+        } catch (RdmDelegateException e) {
+            log.error("Failed to update DesignBlueprint, exception: {}", e.getMessage(), e);
+            return false;
+        }
     }
+    @Override
     public int delete(DeleteByConditionVo deleteByConditionVo) {
         return designBlueprintDelegator.deleteByCondition(deleteByConditionVo);
     }
+    @Override
     public DesignBlueprintViewDTO detail(Long id) {
         PersistObjectIdDecryptDTO persistObjectIdDecryptDTO = new PersistObjectIdDecryptDTO();
         persistObjectIdDecryptDTO.setId(id);

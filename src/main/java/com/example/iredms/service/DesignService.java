@@ -12,7 +12,7 @@ import java.util.List;
 public interface DesignService {
     Boolean create(DesignBlueprintCreateDTO designBlueprintCreateDTO);
     List<DesignBlueprintViewDTO> query(Long id);
-    Boolean update(Long id, DesignBlueprintUpdateDTO designBlueprintUpdateDTO);
+    Boolean update(DesignBlueprintUpdateDTO designBlueprintUpdateDTO);
     int delete(DeleteByConditionVo deleteByConditionVo);
     DesignBlueprintViewDTO detail(Long id);
     RDMResultVO uploadFile(CustomFile customFile);
