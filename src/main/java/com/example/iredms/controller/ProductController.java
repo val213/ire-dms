@@ -40,7 +40,6 @@ public class ProductController {
      */
     @RequestMapping("/query")
     public BaseResponse<List<ProductViewDTO>> query(@RequestBody ProductQueryDTO productQueryDTO) {
-        log.info("query：{}", productQueryDTO);
         return ResultUtils.success(productService.query(productQueryDTO));
     }
 

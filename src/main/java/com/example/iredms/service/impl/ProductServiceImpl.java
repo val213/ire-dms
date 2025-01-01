@@ -69,13 +69,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductViewDTO> query(ProductQueryDTO productQueryDTO) {
         QueryRequestVo queryRequestVo = new QueryRequestVo();
-        log.info("productQueryDTO:" + productQueryDTO);
+//        log.info("productQueryDTO:" + productQueryDTO);
         if (productQueryDTO.getId() != null) {
-            log.info("productQueryDTO.getId():" + productQueryDTO.getId());
+//            log.info("productQueryDTO.getId():" + productQueryDTO.getId());
             queryRequestVo.addCondition("id", ConditionType.EQUAL, productQueryDTO.getId());
         }
         if (productQueryDTO.getProductName() != null && !productQueryDTO.getProductName().isEmpty()) {
-            log.info("productQueryDTO.getProductName():" + productQueryDTO.getProductName());
+//            log.info("productQueryDTO.getProductName():" + productQueryDTO.getProductName());
             queryRequestVo.addCondition("productName", ConditionType.LIKE, productQueryDTO.getProductName());
         }
         RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
@@ -83,11 +83,11 @@ public class ProductServiceImpl implements ProductService {
         try {
             result = productDelegator.find(queryRequestVo, pageVO);
         } catch (Exception e) {
-            log.error("Error occurred while querying products: ", e);
+//            log.error("Error occurred while querying products: ", e);
             return Collections.emptyList();
         }
         if (result == null || result.isEmpty()) {
-            log.info("No products found for the given query.");
+//            log.info("No products found for the given query.");
             return Collections.emptyList();
         }
         return result;

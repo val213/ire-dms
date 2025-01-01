@@ -45,23 +45,23 @@ public class UserController {
      //     * 修改用户：点击“修改”按钮，可编辑该用户信息：用户名、电话号码、权限字段。
      //     * （只能由管理员修改）
      //     */
-    @RequestMapping("/update")
-    public BaseResponse<UserViewDTO> update_byAdmin(@RequestBody UserUpdateDTO user)
-    {
-        UserUpdateDTO u = new UserUpdateDTO();
-        if(user.getAuthority() == Authority.Admin) {
-            if (user.getName() != null && !user.getName().isEmpty()) {
-                u.setName(user.getName());
-            }
-            if (user.getPhone() != null && !user.getPhone().isEmpty()) {
-                u.setPhone(user.getPhone());
-            }
-            if (user.getAuthority() == Authority.Admin || user.getAuthority() == Authority.Normal) {
-                u.setAuthority(user.getAuthority());
-            }
-        }
-        return ResultUtils.success(userService.update(user));
-    }
+//    @RequestMapping("/update")
+//    public BaseResponse<UserViewDTO> update_byAdmin(@RequestBody UserUpdateDTO user)
+//    {
+//        UserUpdateDTO u = new UserUpdateDTO();
+//        if(user.getAuthority() == Authority.Admin) {
+//            if (user.getName() != null && !user.getName().isEmpty()) {
+//                u.setName(user.getName());
+//            }
+//            if (user.getPhone() != null && !user.getPhone().isEmpty()) {
+//                u.setPhone(user.getPhone());
+//            }
+//            if (user.getAuthority() == Authority.Admin || user.getAuthority() == Authority.Normal) {
+//                u.setAuthority(user.getAuthority());
+//            }
+//        }
+//        return ResultUtils.success(userService.update(user));
+//    }
 
     /**
      //     * 修改个人信息：点击“修改信息”，可编辑该用户信息：用户名、密码、电话号码字段。
