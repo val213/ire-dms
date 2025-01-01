@@ -2,6 +2,7 @@ package com.example.iredms.controller;
 
 import com.example.iredms.common.BaseResponse;
 import com.example.iredms.common.ResultUtils;
+import com.example.iredms.dto.ProductIdUpdateDTO;
 import com.example.iredms.dto.ProductQueryDTO;
 import com.example.iredms.service.ProductService;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdDecryptDTO;
@@ -57,9 +58,9 @@ public class ProductController {
      * 修改产品：点击“修改”按钮，可编辑该产品信息：名称、基本信息、负责人、
      * 产品阶段字段。（产品阶段只能由管理员修改）
      */
-    @RequestMapping("/update")
-    public BaseResponse<ProductViewDTO> update(@RequestBody UpdateByConditionVo<ProductUpdateDTO> productUpdateDTO) {
-        return ResultUtils.success(productService.update(productUpdateDTO));
+    @RequestMapping("/update/{id}")
+    public BaseResponse<Boolean> update(@PathVariable Long id,@RequestBody ProductIdUpdateDTO productIdUpdateDTO) {
+        return ResultUtils.success(productService.update(id,productIdUpdateDTO));
     }
 
     /**
@@ -78,9 +79,9 @@ public class ProductController {
      * 产品详情：点击“查看详情”按钮，可查看该产品信息：产品编号、名称、基本信
      * 息、负责人、产品阶段、关联蓝图和部件编号。
      */
-    @RequestMapping(value = "/detail", method = RequestMethod.POST)
-    public BaseResponse<ProductViewDTO> detail(@RequestBody PersistObjectIdDecryptDTO productDetailRequestDTO) {
-        return ResultUtils.success(productService.detail(productDetailRequestDTO));
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.POST)
+    public BaseResponse<ProductViewDTO> detail(@PathVariable Long id) {
+        return ResultUtils.success(productService.detail(id));
     }
     /**
      * 编辑并展示关联蓝图：可创建删除该产品与蓝图关系（形式自由）

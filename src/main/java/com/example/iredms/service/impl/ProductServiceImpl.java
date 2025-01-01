@@ -1,5 +1,6 @@
 package com.example.iredms.service.impl;
 
+import com.example.iredms.dto.ProductIdUpdateDTO;
 import com.example.iredms.dto.ProductQueryDTO;
 import com.example.iredms.service.ProductService;
 import com.huawei.innovation.rdm.coresdk.basic.dto.PersistObjectIdDecryptDTO;
@@ -9,6 +10,7 @@ import com.huawei.innovation.rdm.coresdk.basic.vo.DeleteByConditionVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.coresdk.basic.vo.UpdateByConditionVo;
+import com.huawei.innovation.rdm.intelligentrobotengineering.bean.enumerate.EngineeringStage;
 import com.huawei.innovation.rdm.intelligentrobotengineering.bean.relation.ProductBlueprintLink;
 import com.huawei.innovation.rdm.intelligentrobotengineering.bean.relation.ProductPartLink;
 import com.huawei.innovation.rdm.intelligentrobotengineering.delegator.ProductBlueprintLinkDelegator;
@@ -26,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +56,6 @@ public class ProductServiceImpl implements ProductService {
 
         // 产品阶段
         if(productViewDTO.getProductStage() != null){
-            // todo:判断产品阶段是否为规定的枚举值集合之中
             product.setProductStage(productViewDTO.getProductStage());
         }
         // 产品信息
@@ -91,32 +93,43 @@ public class ProductServiceImpl implements ProductService {
         return result;
     }
 
-    @Override
-    public ProductViewDTO update(@RequestBody UpdateByConditionVo<ProductUpdateDTO> productUpdateDTO) {
-        ProductUpdateDTO product = new ProductUpdateDTO();
-        product.setId(productUpdateDTO.getUpdateDTO().getId());
-        // 更新入参body中所带的字段
-        if(productUpdateDTO.getUpdateDTO().getProductName()!= null && !productUpdateDTO.getUpdateDTO().getProductName().isEmpty()){
-            product.setProductName(productUpdateDTO.getUpdateDTO().getProductName());
-        }
-        if(productUpdateDTO.getUpdateDTO().getProductOwner() != null && !productUpdateDTO.getUpdateDTO().getProductOwner().isEmpty()){
-            product.setProductOwner(productUpdateDTO.getUpdateDTO().getProductOwner());
-        }
-        if(productUpdateDTO.getUpdateDTO().getProductStage() != null){
-            product.setProductStage(productUpdateDTO.getUpdateDTO().getProductStage());
-        }
-        if(productUpdateDTO.getUpdateDTO().getProductInformation() != null && !productUpdateDTO.getUpdateDTO().getProductInformation().isEmpty()){
-            product.setProductInformation(productUpdateDTO.getUpdateDTO().getProductInformation());
-        }
-        return productDelegator.update(product);
+@Override
+public Boolean update(Long id, @RequestBody ProductIdUpdateDTO productIdUpdateDTO) {
+    // todo: 产品阶段只能由管理员修改
+    if (productIdUpdateDTO == null) {
+        return false;
     }
+    ProductUpdateDTO productUpdateDTO = new ProductUpdateDTO();
+    productUpdateDTO.setId(id);
+    // 判断每个字段是否非空，再进行赋值
+    if (productIdUpdateDTO.getProductName() != null && !productIdUpdateDTO.getProductName().isEmpty()) {
+        productUpdateDTO.setProductName(productIdUpdateDTO.getProductName());
+    }
+    if (productIdUpdateDTO.getProductInformation() != null && !productIdUpdateDTO.getProductInformation().isEmpty()) {
+        productUpdateDTO.setProductInformation(productIdUpdateDTO.getProductInformation());
+    }
+    if (productIdUpdateDTO.getProductOwner() != null && !productIdUpdateDTO.getProductOwner().isEmpty()) {
+        productUpdateDTO.setProductOwner(productIdUpdateDTO.getProductOwner());
+    }
+    if (productIdUpdateDTO.getProductStage() != null) {
+        try {
+            productUpdateDTO.setProductStage(productIdUpdateDTO.getProductStage());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid productStage value: " + productIdUpdateDTO.getProductStage(), e);
+        }
+    }
+    ProductViewDTO r =  productDelegator.update(productUpdateDTO);
+    return r != null;
+}
     @Override
     public int delete(@RequestBody DeleteByConditionVo deleteByConditionVo) {
         return productDelegator.deleteByCondition(deleteByConditionVo);
     }
 
     @Override
-    public ProductViewDTO detail(@RequestBody PersistObjectIdDecryptDTO productDetailRequestDTO) {
+    public ProductViewDTO detail(@RequestParam Long id) {
+        PersistObjectIdDecryptDTO productDetailRequestDTO = new PersistObjectIdDecryptDTO();
+        productDetailRequestDTO.setId(id);
         return productDelegator.get(productDetailRequestDTO);
     }
 
