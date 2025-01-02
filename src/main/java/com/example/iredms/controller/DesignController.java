@@ -5,12 +5,15 @@ import com.example.iredms.common.ResultUtils;
 import com.example.iredms.dto.ProductQueryDTO;
 import com.example.iredms.service.DesignService;
 import com.example.iredms.utils.CustomFile;
+import com.huawei.innovation.rdm.bean.entity.XDMFileModel;
 import com.huawei.innovation.rdm.coresdk.basic.enums.ConditionType;
 import com.huawei.innovation.rdm.coresdk.basic.vo.DeleteByConditionVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.QueryRequestVo;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.coresdk.basic.vo.RDMResultVO;
 import com.huawei.innovation.rdm.delegate.service.FileDelegatorService;
+import com.huawei.innovation.rdm.delegate.service.XDMDelegatorService;
+import com.huawei.innovation.rdm.intelligentrobotengineering.bean.entity.DesignBlueprint;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.DesignBlueprintCreateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.DesignBlueprintQueryViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.DesignBlueprintUpdateDTO;
@@ -18,11 +21,18 @@ import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.DesignBl
 import com.huawei.innovation.rdm.intelligentrobotengineering.service.IDesignBlueprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.reflections.Reflections.log;
 
 @RestController
 @RequestMapping("/blueprint")
@@ -49,8 +59,36 @@ public class DesignController {
      * 修改蓝图：点击“修改”按钮，可编辑该蓝图信息：蓝图，说明字段。
      */
     @RequestMapping("/update/{id}")
-    public BaseResponse<Boolean> update(@PathVariable Long id, @RequestBody DesignBlueprintUpdateDTO designBlueprintUpdateDTO) {
-        return ResultUtils.success(designService.update(id, designBlueprintUpdateDTO));
+    public BaseResponse<Boolean> update(@PathVariable Long id, @RequestParam String buleprintDescription, @RequestParam String bluePrintName, @RequestPart MultipartFile file) {
+        log.info("Updating blueprint with bluePrintName: {}, buleprintDescription: {}", bluePrintName, buleprintDescription);
+        try {
+            CustomFile customFile = new CustomFile();
+            customFile.setId(String.valueOf(id));
+            String mimeType = file.getContentType();
+            log.info("File MIME type: {}", mimeType);
+            customFile.setFile(file);
+            Object ID = designService.uploadFile(customFile).getData().get(0);
+            log.info("File uploaded successfully, docID: {}", ID);
+
+//            byte[] fileBytes = file.getBytes();
+//            Blob fileBlob = new SerialBlob(fileBytes);
+//            XDMFileModel xdmFileModel = new XDMFileModel();
+//            xdmFileModel.setFileContent(fileBlob);
+//            xdmFileModel.setDocId(String.valueOf(ID) );
+//
+//            List<XDMFileModel> blueprint = new ArrayList<>();
+//            blueprint.add(xdmFileModel);
+
+            DesignBlueprintUpdateDTO designBlueprintUpdateDTO = new DesignBlueprintUpdateDTO();
+            designBlueprintUpdateDTO.setId(id);
+//            designBlueprintUpdateDTO.setBluePrint(blueprint);
+            designBlueprintUpdateDTO.setBuleprintDescription(buleprintDescription);
+            designBlueprintUpdateDTO.setBluePrintName(bluePrintName);
+            return ResultUtils.success(designService.update(designBlueprintUpdateDTO));
+        } catch (Exception e) {
+            log.error("Failed to update blueprint", e);
+            return ResultUtils.error(500, "Failed to update blueprint: " + e.getMessage());
+        }
     }
     /**
      * 删除蓝图：点击“删除”按钮，可删除该蓝图
@@ -72,9 +110,9 @@ public class DesignController {
     public BaseResponse<DesignBlueprintViewDTO> detail(@PathVariable("id") Long id) {
         return ResultUtils.success(designService.detail(id));
     }
-    @PostMapping("/upload")
-    public BaseResponse<RDMResultVO> uploadFile(CustomFile customFile){
-        return ResultUtils.success(designService.uploadFile(customFile));
+//    @PostMapping("/upload")
+    public RDMResultVO uploadFile(CustomFile customFile){
+        return designService.uploadFile(customFile);
     }
     @PostMapping("/download")public void downloadFile(@RequestParam("file_ids")String fileids,@RequestParam("instance_id")String id, HttpServletResponse response){
         try{
