@@ -11,10 +11,7 @@ import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductC
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductQueryViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductUpdateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductViewDTO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.ProductBlueprintLinkCreateDTO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.ProductBlueprintLinkViewDTO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.ProductPartLinkCreateDTO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.ProductPartLinkViewDTO;
+import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.*;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,8 +22,9 @@ public interface ProductService {
     Boolean update(@RequestParam Long id, @RequestBody ProductIdUpdateDTO productIdUpdateDTO);
     int delete(@RequestBody DeleteByConditionVo deleteByConditionVo);
     ProductViewDTO detail(@RequestParam Long id);
-    Boolean createProductBlueprintLink(@RequestBody ProductBlueprintLinkViewDTO productBlueprintLinkViewDTO);
-    int deleteProductBlueprintLink(@RequestBody DeleteByConditionVo deleteByConditionVo);
+    Boolean createProductBlueprintLink(@RequestBody ProductBlueprintLinkCreateDTO productBlueprintLinkCreateDTO);
+    List<ProductBlueprintLinkViewDTO> queryProductBlueprintLink(@RequestParam Long productId);
+    int deleteProductBlueprintLink(@RequestParam Long productId);
     Boolean createProductPartLink(@RequestBody ProductPartLinkViewDTO productPartLinkViewDTO);
     int deleteProductPartLink(@RequestBody DeleteByConditionVo deleteByConditionVo);
 
