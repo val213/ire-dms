@@ -59,8 +59,8 @@ public class DesignController {
      * 修改蓝图：点击“修改”按钮，可编辑该蓝图信息：蓝图，说明字段。
      */
     @RequestMapping("/update/{id}")
-    public BaseResponse<Boolean> update(@PathVariable Long id, @RequestParam String buleprintDescription, @RequestParam String bluePrintName, @RequestPart MultipartFile file) {
-        log.info("Updating blueprint with bluePrintName: {}, buleprintDescription: {}", bluePrintName, buleprintDescription);
+    public BaseResponse<Boolean> update(@PathVariable Long id, @RequestParam String buleprintDescription, @RequestPart MultipartFile file) {
+        log.info("Updating blueprint with file: {}", file);
         try {
             CustomFile customFile = new CustomFile();
             customFile.setId(String.valueOf(id));
@@ -83,7 +83,7 @@ public class DesignController {
             designBlueprintUpdateDTO.setId(id);
 //            designBlueprintUpdateDTO.setBluePrint(blueprint);
             designBlueprintUpdateDTO.setBuleprintDescription(buleprintDescription);
-            designBlueprintUpdateDTO.setBluePrintName(bluePrintName);
+
             return ResultUtils.success(designService.update(designBlueprintUpdateDTO));
         } catch (Exception e) {
             log.error("Failed to update blueprint", e);
