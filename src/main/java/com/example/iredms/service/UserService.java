@@ -12,6 +12,9 @@ import java.util.List;
 
 public interface UserService {
 
+    Boolean create(@RequestBody UserViewDTO userViewDTO);
+    Boolean login(@PathVariable String name, @PathVariable String userPassword);
+
     List<UserQueryViewDTO> query(@PathVariable String name);
     Boolean update_a(@RequestBody UserUpdateDTO userUpdateDTO);
     Boolean update_s(@RequestBody UserUpdateDTO userUpdateDTO);

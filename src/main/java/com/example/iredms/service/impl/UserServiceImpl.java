@@ -9,6 +9,7 @@ import com.huawei.innovation.rdm.intelligentrobotengineering.delegator.UserDeleg
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserQueryViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserUpdateDTO;
+import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserCreateDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,49 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDelegator userDelegator;
 
+    //注册（创建新用户）
+    @Override
+    public Boolean create(@RequestBody UserViewDTO userViewDTO) {
+        UserCreateDTO user = new UserCreateDTO();
+        //用户名
+        if(userViewDTO.getName()!= null && !userViewDTO.getName().isEmpty()){
+            user.setName(userViewDTO.getName());
+        }
+        //密码
+        if(userViewDTO.getUserPassword()!= null && !userViewDTO.getUserPassword().isEmpty()){
+            user.setUserPassword(userViewDTO.getUserPassword());
+        }
+        //电话号码
+        if(userViewDTO.getPhone()!= null && !userViewDTO.getPhone().isEmpty()){
+            user.setPhone(userViewDTO.getPhone());
+        }
+
+        UserViewDTO _UserViewDTO = userDelegator.create(user);
+        return _UserViewDTO!=null;
+    }
+
+    //用户登录
+    @Override
+    public Boolean login(@PathVariable String name, @PathVariable String userPassword){
+        QueryRequestVo q_user = new QueryRequestVo();
+        if (name!= null && userPassword != null) {
+            q_user.addCondition("name", ConditionType.EQUAL, name);
+            q_user.addCondition("userPassword", ConditionType.EQUAL, userPassword);
+        }
+        RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
+        List<UserQueryViewDTO> result;
+        try {
+            result = userDelegator.query(q_user, pageVO);
+        } catch (Exception e) {
+            return false;
+        }
+        if (result == null || result.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    //按用户名查询用户
     @Override
     public List<UserQueryViewDTO> query(@PathVariable String name) {
         QueryRequestVo q = new QueryRequestVo();
@@ -45,6 +89,7 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    //管理员修改用户信息
     @Override
     public Boolean update_a(@RequestBody UserUpdateDTO userUpdateDTO) {
         if(userUpdateDTO == null){
@@ -70,6 +115,7 @@ public class UserServiceImpl implements UserService {
         return r != null;
     }
 
+    //用户修改个人信息
     @Override
     public Boolean update_s(@RequestBody UserUpdateDTO userUpdateDTO) {
         if(userUpdateDTO == null){
