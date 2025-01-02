@@ -20,10 +20,7 @@ import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductC
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductQueryViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductUpdateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.ProductViewDTO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.ProductBlueprintLinkCreateDTO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.ProductBlueprintLinkViewDTO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.ProductPartLinkCreateDTO;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.ProductPartLinkViewDTO;
+import com.huawei.innovation.rdm.intelligentrobotengineering.dto.relation.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,14 +131,23 @@ public Boolean update(Long id, @RequestBody ProductIdUpdateDTO productIdUpdateDT
     }
 
     @Override
-    public Boolean createProductBlueprintLink(@RequestBody ProductBlueprintLinkViewDTO productBlueprintLinkViewDTO) {
-        ProductBlueprintLinkCreateDTO productBlueprintLink = new ProductBlueprintLinkCreateDTO();
-        ProductBlueprintLinkViewDTO _productBlueprintLinkViewDTO =  productBlueprintLinkDelegator.create(productBlueprintLink);
+    public Boolean createProductBlueprintLink(@RequestBody ProductBlueprintLinkCreateDTO productBlueprintLinkCreateDTO) {
+        ProductBlueprintLinkViewDTO _productBlueprintLinkViewDTO =  productBlueprintLinkDelegator.create(productBlueprintLinkCreateDTO);
         return _productBlueprintLinkViewDTO!=null;
     }
-
     @Override
-    public int deleteProductBlueprintLink(@RequestBody DeleteByConditionVo deleteByConditionVo) {
+    public List<ProductBlueprintLinkViewDTO> queryProductBlueprintLink(@RequestParam Long productId){
+        QueryRequestVo queryRequestVo = new QueryRequestVo();
+        queryRequestVo.addCondition("source.id", ConditionType.EQUAL, productId);
+        RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
+        return productBlueprintLinkDelegator.find(queryRequestVo, pageVO);
+    }
+    @Override
+    public int deleteProductBlueprintLink(@RequestParam Long productId) {
+        DeleteByConditionVo deleteByConditionVo = new DeleteByConditionVo();
+        QueryRequestVo queryRequestVo = new QueryRequestVo();
+        queryRequestVo.addCondition("source.id", ConditionType.EQUAL, productId);
+        deleteByConditionVo.setCondition(queryRequestVo);
         return productBlueprintLinkDelegator.deleteByCondition(deleteByConditionVo);
     }
 

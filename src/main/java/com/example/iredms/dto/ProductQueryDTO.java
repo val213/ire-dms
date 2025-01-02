@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class ProductQueryDTO {
     private String productName;
-    private String id;
+    private Long id;
 }
