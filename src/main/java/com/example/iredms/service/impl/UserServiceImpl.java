@@ -43,6 +43,8 @@ public class UserServiceImpl implements UserService {
         if(userViewDTO.getPhone()!= null && !userViewDTO.getPhone().isEmpty()){
             user.setPhone(userViewDTO.getPhone());
         }
+        //默认为普通用户
+        user.setAuthority(Authority.Normal);
 
         UserViewDTO _UserViewDTO = userDelegator.create(user);
         return _UserViewDTO!=null;
