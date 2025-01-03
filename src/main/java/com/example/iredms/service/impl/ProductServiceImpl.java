@@ -142,6 +142,7 @@ public Boolean update(Long id, @RequestBody ProductIdUpdateDTO productIdUpdateDT
         RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
         return productBlueprintLinkDelegator.find(queryRequestVo, pageVO);
     }
+
     @Override
     public int deleteProductBlueprintLink(@RequestParam Long productId) {
         DeleteByConditionVo deleteByConditionVo = new DeleteByConditionVo();
@@ -153,13 +154,25 @@ public Boolean update(Long id, @RequestBody ProductIdUpdateDTO productIdUpdateDT
 
 
     @Override
-    public Boolean createProductPartLink(@RequestBody ProductPartLinkViewDTO productPartLinkViewDTO) {
-        ProductPartLinkCreateDTO productPartLink = new ProductPartLinkCreateDTO();
+    public Boolean createProductPartLink(@RequestBody ProductPartLinkCreateDTO productPartLink) {
         ProductPartLinkViewDTO _productPartLinkViewDTO = productPartLinkDelegator.create(productPartLink);
         return _productPartLinkViewDTO!=null;
     }
+
     @Override
-    public int deleteProductPartLink(@RequestBody DeleteByConditionVo deleteByConditionVo) {
+    public List<ProductPartLinkViewDTO> queryProductPartLink(Long productId) {
+        QueryRequestVo queryRequestVo = new QueryRequestVo();
+        queryRequestVo.addCondition("source.id", ConditionType.EQUAL, productId);
+        RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
+        return productPartLinkDelegator.find(queryRequestVo, pageVO);
+    }
+
+    @Override
+    public int deleteProductPartLink(@RequestParam Long productId) {
+        DeleteByConditionVo deleteByConditionVo = new DeleteByConditionVo();
+        QueryRequestVo queryRequestVo = new QueryRequestVo();
+        queryRequestVo.addCondition("source.id", ConditionType.EQUAL, productId);
+        deleteByConditionVo.setCondition(queryRequestVo);
         return productPartLinkDelegator.deleteByCondition(deleteByConditionVo);
     }
 }
