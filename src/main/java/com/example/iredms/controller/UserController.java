@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.reflections.Reflections.log;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -43,8 +45,9 @@ public class UserController {
      * 查询用户：可按用户名精确查询，展示注册日期、用户名、电话号码、权限等字段
      * （只能由管理员查看）
      */
-    @RequestMapping("/query/{name}")
-    public BaseResponse<List<UserQueryViewDTO>> query(@PathVariable String name) {
+    @RequestMapping("/query")
+    public BaseResponse<List<UserQueryViewDTO>> query(@RequestParam String name) {
+        log.info("query user by name:{}", name);
         return ResultUtils.success(userService.query(name));
     }
 
