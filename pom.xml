@@ -8,7 +8,7 @@
     <artifactId>ire-dms</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <idme.jar.path>C:\Users\yangluwei\Desktop\JavaBox\ire-dms\src\jar</idme.jar.path>
+        <idme.jar.path>ire-dms/src/jar</idme.jar.path>
         <idme.app.name>intelligentrobotengineering</idme.app.name>
     </properties>
     <repositories>
@@ -27,33 +27,41 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+
+
         <dependency>
             <groupId>com.huawei.xdm</groupId>
             <artifactId>core-sdk-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${idme.jar.path}\core-sdk-api-1.0.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/src/jar/core-sdk-api-1.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.huawei.xdm</groupId>
             <artifactId>rdm-common</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${idme.jar.path}\rdm-common-1.0.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/src/jar/rdm-common-1.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.huawei.xdm</groupId>
             <artifactId>rdm-delegate</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${idme.jar.path}\rdm-delegate-1.0.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/src/jar/rdm-delegate-1.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.huawei.xdm</groupId>
             <artifactId>${idme.app.name}.api</artifactId>
             <version>1.0.0-optimization-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${idme.jar.path}\${idme.app.name}.api-1.0.0-optimization-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/src/jar/${idme.app.name}.api-1.0.0-optimization-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
@@ -74,6 +82,10 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.6.9.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -103,6 +115,21 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.76</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -110,9 +137,26 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.example.iredms.IreDmsApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+
             </plugin>
         </plugins>
     </build>

@@ -133,16 +133,42 @@ public class ProductController {
      * 注意：仅当产品处于原型开发阶段时，方可编辑
      */
     @RequestMapping("/part/create")
-    public BaseResponse<Boolean> createProductPartLink(@RequestBody ProductPartLinkViewDTO productPartViewRequestDTO) {
-        return ResultUtils.success(productService.createProductPartLink(productPartViewRequestDTO));
+    public BaseResponse<Boolean> createProductPartLink(@RequestBody ProductPartLinkCreateDTO productPartLink) {
+        // 仅当产品处于概念化和设计阶段时，方可编辑
+        if (productPartLink == null) {
+            return ResultUtils.error(PARAMS_ERROR,"productPartLinkCreateDTO is null");
+        }
+        if (productPartLink.getSource() == null) {
+            return ResultUtils.error(PARAMS_ERROR,"product id is null");
+        }
+        if (productPartLink.getTarget() == null) {
+            return ResultUtils.error(PARAMS_ERROR,"part id is null");
+        }
+        ProductQueryDTO productQueryDTO = new ProductQueryDTO();
+        productQueryDTO.setId(productPartLink.getSource().getId());
+        // 仅当产品处于概念化和设计阶段时，方可编辑
+        if (productService.query(productQueryDTO).get(0).getProductStage()== EngineeringStage.DesignStage){
+            return ResultUtils.success(productService.createProductPartLink(productPartLink));
+        }
+        else {
+            return ResultUtils.error(OPERATION_ERROR,"productStage is not DesignStage");
+        }
+
     }
 
-    @RequestMapping("/part/delete/{id}")
-    public BaseResponse<Integer> partDelete(@PathVariable String id) {
-        DeleteByConditionVo deleteByConditionVo = new DeleteByConditionVo();
-        QueryRequestVo queryRequestVo = new QueryRequestVo();
-        queryRequestVo.addCondition("id",ConditionType.EQUAL,id);
-        deleteByConditionVo.setCondition(queryRequestVo);
-        return ResultUtils.success(productService.deleteProductPartLink(deleteByConditionVo));
+    @RequestMapping("/part/query")
+    public BaseResponse<List<ProductPartLinkViewDTO>> queryProductPartLink(@RequestParam Long productId) {
+        return ResultUtils.success(productService.queryProductPartLink(productId));
+    }
+
+    @RequestMapping("/part/delete")
+    public BaseResponse<Integer> deleteProductPartLink(@RequestParam Long productId) {
+        ProductQueryDTO productQueryDTO = new ProductQueryDTO();
+        productQueryDTO.setId(productId);
+        if (productService.query(productQueryDTO).get(0).getProductStage()== EngineeringStage.DesignStage){
+            return ResultUtils.success(productService.deleteProductPartLink(productId));
+        }else {
+            return ResultUtils.error(OPERATION_ERROR,"productStage is not DesignStage");
+        }
     }
 }
