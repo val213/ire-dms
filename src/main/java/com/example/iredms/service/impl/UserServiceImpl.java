@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
-        UserViewDTO r =  userDelegator.update(userUpdateDTO);
+        UserViewDTO r =  userDelegator.update(u);
         return r != null;
     }
 
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
             u.setPhone(userUpdateDTO.getPhone());
         }
 
-        UserViewDTO r =  userDelegator.update(userUpdateDTO);
+        UserViewDTO r =  userDelegator.update(u);
         return r != null;
     }
 }
