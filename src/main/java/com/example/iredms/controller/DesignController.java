@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.reflections.Reflections.log;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/blueprint")
 public class DesignController {

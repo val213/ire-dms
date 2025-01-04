@@ -12,14 +12,11 @@ import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.PartView
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.PartCreateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.PartViewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/part")
 public class PartController {

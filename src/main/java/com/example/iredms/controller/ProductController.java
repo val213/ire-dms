@@ -28,7 +28,7 @@ import java.util.List;
 import static com.example.iredms.common.ErrorCode.OPERATION_ERROR;
 import static com.example.iredms.common.ErrorCode.PARAMS_ERROR;
 import static org.reflections.Reflections.log;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/product")
 public class ProductController {
