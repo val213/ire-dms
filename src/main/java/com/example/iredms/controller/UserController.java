@@ -46,7 +46,7 @@ public class UserController {
      * （只能由管理员查看）
      */
     @RequestMapping("/query")
-    public BaseResponse<List<UserQueryViewDTO>> query(@RequestParam String name) {
+    public BaseResponse<List<UserViewDTO>> query(@RequestParam String name) {
         log.info("query user by name:{}", name);
         return ResultUtils.success(userService.query(name));
     }
@@ -55,20 +55,20 @@ public class UserController {
      * 修改用户：点击“修改”按钮，可编辑该用户信息：用户名、电话号码、权限字段。
      * （只能由管理员修改）
      */
-    @RequestMapping("/update/admin")
-    public BaseResponse<Boolean> update_byAdmin(@RequestBody UserUpdateDTO user)
+    @RequestMapping("/update/admin/{id}")
+    public BaseResponse<Boolean> update_byAdmin(@PathVariable Long id, @RequestBody UserUpdateDTO user)
     {
-        return ResultUtils.success(userService.update_a(user));
+        return ResultUtils.success(userService.update_a(id, user));
     }
 
     /**
      * 修改个人信息：点击“修改信息”，可编辑该用户信息：用户名、密码、电话号码字段。
      * （用户自己修改）
      */
-    @RequestMapping("/update/self")
-    public BaseResponse<Boolean> update(@RequestBody UserUpdateDTO user)
+    @RequestMapping("/update/self/{id}")
+    public BaseResponse<Boolean> update(@PathVariable Long id, @RequestBody UserUpdateDTO user)
     {
-        return ResultUtils.success(userService.update_s(user));
+        return ResultUtils.success(userService.update_s(id,user));
     }
 
 }
