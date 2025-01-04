@@ -39,29 +39,21 @@
             <groupId>com.huawei.xdm</groupId>
             <artifactId>core-sdk-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/jar/core-sdk-api-1.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.huawei.xdm</groupId>
             <artifactId>rdm-common</artifactId>
             <version>1.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/jar/rdm-common-1.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.huawei.xdm</groupId>
             <artifactId>rdm-delegate</artifactId>
             <version>1.0.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/jar/rdm-delegate-1.0.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.huawei.xdm</groupId>
             <artifactId>${idme.app.name}.api</artifactId>
             <version>1.0.0-optimization-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/jar/${idme.app.name}.api-1.0.0-optimization-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
