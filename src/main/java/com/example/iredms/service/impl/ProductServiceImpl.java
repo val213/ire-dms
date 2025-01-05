@@ -142,10 +142,11 @@ public Boolean update(Long id, @RequestBody ProductIdUpdateDTO productIdUpdateDT
     }
 
     @Override
-    public int deleteProductBlueprintLink(@RequestParam Long productId) {
+    public int deleteProductBlueprintLink(@RequestParam Long productId, @RequestParam Long blueprintId) {
         DeleteByConditionVo deleteByConditionVo = new DeleteByConditionVo();
         QueryRequestVo queryRequestVo = new QueryRequestVo();
         queryRequestVo.addCondition("source.id", ConditionType.EQUAL, productId);
+        queryRequestVo.addCondition("target.id", ConditionType.EQUAL, blueprintId);
         deleteByConditionVo.setCondition(queryRequestVo);
         return productBlueprintLinkDelegator.deleteByCondition(deleteByConditionVo);
     }
@@ -166,10 +167,11 @@ public Boolean update(Long id, @RequestBody ProductIdUpdateDTO productIdUpdateDT
     }
 
     @Override
-    public int deleteProductPartLink(@RequestParam Long productId) {
+    public int deleteProductPartLink(@RequestParam Long productId, @RequestParam Long partId) {
         DeleteByConditionVo deleteByConditionVo = new DeleteByConditionVo();
         QueryRequestVo queryRequestVo = new QueryRequestVo();
         queryRequestVo.addCondition("source.id", ConditionType.EQUAL, productId);
+        queryRequestVo.addCondition("target.id", ConditionType.EQUAL, partId);
         deleteByConditionVo.setCondition(queryRequestVo);
         return productPartLinkDelegator.deleteByCondition(deleteByConditionVo);
     }

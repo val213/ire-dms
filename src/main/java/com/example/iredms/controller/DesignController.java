@@ -2,6 +2,7 @@ package com.example.iredms.controller;
 
 import com.example.iredms.common.BaseResponse;
 import com.example.iredms.common.ResultUtils;
+import com.example.iredms.dto.BlueprintUpdateDTO;
 import com.example.iredms.dto.ProductQueryDTO;
 import com.example.iredms.service.DesignService;
 import com.example.iredms.utils.CustomFile;
@@ -59,7 +60,7 @@ public class DesignController {
      * 修改蓝图：点击“修改”按钮，可编辑该蓝图信息：蓝图，说明字段。
      */
     @RequestMapping("/update/{id}")
-    public BaseResponse<Boolean> update(@PathVariable Long id, @RequestParam String buleprintDescription, @RequestParam String bluePrintName, @RequestPart MultipartFile file) {
+    public BaseResponse<BlueprintUpdateDTO> update(@PathVariable Long id, @RequestParam String buleprintDescription, @RequestParam String bluePrintName, @RequestPart MultipartFile file) {
         log.info("Updating blueprint with bluePrintName: {}, buleprintDescription: {}", bluePrintName, buleprintDescription);
         try {
             CustomFile customFile = new CustomFile();
@@ -84,7 +85,13 @@ public class DesignController {
 //            designBlueprintUpdateDTO.setBluePrint(blueprint);
             designBlueprintUpdateDTO.setBuleprintDescription(buleprintDescription);
             designBlueprintUpdateDTO.setBluePrintName(bluePrintName);
-            return ResultUtils.success(designService.update(designBlueprintUpdateDTO));
+            designBlueprintUpdateDTO.setFile_Id(ID.toString());
+
+            Boolean result = designService.update(designBlueprintUpdateDTO);
+            BlueprintUpdateDTO blueprintUpdateDTO = new BlueprintUpdateDTO();
+            blueprintUpdateDTO.setResult(result);
+            blueprintUpdateDTO.setFile_id(String.valueOf(ID));
+            return ResultUtils.success(blueprintUpdateDTO);
         } catch (Exception e) {
             log.error("Failed to update blueprint", e);
             return ResultUtils.error(500, "Failed to update blueprint: " + e.getMessage());

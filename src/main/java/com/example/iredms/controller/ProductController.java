@@ -123,12 +123,12 @@ public class ProductController {
         return ResultUtils.success(productService.queryProductBlueprintLink(queryRequestVo));
     }
     @RequestMapping("/blueprint/delete")
-    public BaseResponse<Integer> deleteProductBlueprintLink(@RequestParam Long productId) {
+    public BaseResponse<Integer> deleteProductBlueprintLink(@RequestParam Long productId,@RequestParam Long blueprintId) {
         ProductQueryDTO productQueryDTO = new ProductQueryDTO();
         productQueryDTO.setId(productId);
         // 仅当产品处于概念化和设计阶段时，方可编辑
         if (productService.query(productQueryDTO).get(0).getProductStage()== EngineeringStage.DesignStage){
-            return ResultUtils.success(productService.deleteProductBlueprintLink(productId));
+            return ResultUtils.success(productService.deleteProductBlueprintLink(productId, blueprintId));
         }else{
             return ResultUtils.error(OPERATION_ERROR,"productStage is not DesignStage");
         }
@@ -168,11 +168,11 @@ public class ProductController {
     }
 
     @RequestMapping("/part/delete")
-    public BaseResponse<Integer> deleteProductPartLink(@RequestParam Long productId) {
+    public BaseResponse<Integer> deleteProductPartLink(@RequestParam Long productId, @RequestParam Long partId){
         ProductQueryDTO productQueryDTO = new ProductQueryDTO();
         productQueryDTO.setId(productId);
         if (productService.query(productQueryDTO).get(0).getProductStage()== EngineeringStage.DesignStage){
-            return ResultUtils.success(productService.deleteProductPartLink(productId));
+            return ResultUtils.success(productService.deleteProductPartLink(productId,partId ));
         }else {
             return ResultUtils.error(OPERATION_ERROR,"productStage is not DesignStage");
         }
