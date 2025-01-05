@@ -24,9 +24,9 @@ public interface ProductService {
     ProductViewDTO detail(@RequestParam Long id);
     Boolean createProductBlueprintLink(@RequestBody ProductBlueprintLinkCreateDTO productBlueprintLinkCreateDTO);
     List<ProductBlueprintLinkViewDTO> queryProductBlueprintLink(QueryRequestVo queryRequestVo);
-    int deleteProductBlueprintLink(@RequestParam Long productId);
+    int deleteProductBlueprintLink(@RequestParam Long productId, @RequestParam Long blueprintId);
     Boolean createProductPartLink(@RequestBody ProductPartLinkCreateDTO productPartLink);
     List<ProductPartLinkViewDTO> queryProductPartLink(@RequestParam Long productId);
-    int deleteProductPartLink(@RequestParam Long productId);
+    int deleteProductPartLink(@RequestParam Long productId, @RequestParam Long partId);
 
 }
