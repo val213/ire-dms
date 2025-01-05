@@ -33,8 +33,6 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.8.0</version>
         </dependency>
-
-
         <dependency>
             <groupId>com.huawei.xdm</groupId>
             <artifactId>core-sdk-api</artifactId>
