@@ -91,6 +91,9 @@ public class DesignServiceImpl implements DesignService {
         MultipartFile file=customFile.getFile();
         UploadFileModelVO uploadFileModelVO=new UploadFileModelVO();
         uploadFileModelVO.setFile(file);
+        // 打印文件类型
+        String mimeType = file.getContentType();
+        log.info("File MIME type: {}", mimeType);
         uploadFileModelVO.setModelNumber("DMO2192458");
         uploadFileModelVO.setModelName("DesignBlueprint");
         uploadFileModelVO.setAttributeName("BluePrint");
