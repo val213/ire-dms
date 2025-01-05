@@ -113,8 +113,14 @@ public class ProductController {
     }
 
     @RequestMapping("/blueprint/query")
-    public BaseResponse<List<ProductBlueprintLinkViewDTO>> queryProductBlueprintLink(@RequestParam Long productId) {
-        return ResultUtils.success(productService.queryProductBlueprintLink(productId));
+    public BaseResponse<List<ProductBlueprintLinkViewDTO>> queryProductBlueprintLink(@RequestParam String productId) {
+        QueryRequestVo queryRequestVo = new QueryRequestVo();
+        if (productId!= null && !productId.isEmpty()) {
+            Long product = Long.parseLong(productId);
+            log.info("productId:{}",product);
+            queryRequestVo.addCondition("source.id", ConditionType.EQUAL, product);
+        }
+        return ResultUtils.success(productService.queryProductBlueprintLink(queryRequestVo));
     }
     @RequestMapping("/blueprint/delete")
     public BaseResponse<Integer> deleteProductBlueprintLink(@RequestParam Long productId) {
