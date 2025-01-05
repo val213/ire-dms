@@ -6,7 +6,6 @@ import com.huawei.innovation.rdm.coresdk.basic.vo.RDMPageVO;
 import com.huawei.innovation.rdm.coresdk.basic.enums.ConditionType;
 import com.huawei.innovation.rdm.intelligentrobotengineering.bean.enumerate.Authority;
 import com.huawei.innovation.rdm.intelligentrobotengineering.delegator.UserDelegator;
-import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserQueryViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserViewDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserUpdateDTO;
 import com.huawei.innovation.rdm.intelligentrobotengineering.dto.entity.UserCreateDTO;
@@ -59,9 +58,9 @@ public class UserServiceImpl implements UserService {
             q_user.addCondition("userPassword", ConditionType.EQUAL, userPassword);
         }
         RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
-        List<UserQueryViewDTO> result;
+        List<UserViewDTO> result;
         try {
-            result = userDelegator.query(q_user, pageVO);
+            result = userDelegator.find(q_user, pageVO);
         } catch (Exception e) {
             return false;
         }
@@ -73,15 +72,15 @@ public class UserServiceImpl implements UserService {
 
     //按用户名查询用户
     @Override
-    public List<UserQueryViewDTO> query(@PathVariable String name) {
+    public List<UserViewDTO> query(@PathVariable String name) {
         QueryRequestVo q = new QueryRequestVo();
         if (name!= null) {
             q.addCondition("name", ConditionType.EQUAL, name);
         }
         RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
-        List<UserQueryViewDTO> result;
+        List<UserViewDTO> result;
         try {
-            result = userDelegator.query(q, pageVO);
+            result = userDelegator.find(q, pageVO);
         } catch (Exception e) {
             return Collections.emptyList();
         }
@@ -93,11 +92,13 @@ public class UserServiceImpl implements UserService {
 
     //管理员修改用户信息
     @Override
-    public Boolean update_a(@RequestBody UserUpdateDTO userUpdateDTO) {
+    public Boolean update_a(Long id, @RequestBody UserUpdateDTO userUpdateDTO) {
         if(userUpdateDTO == null){
             return null;
         }
         UserUpdateDTO u = new UserUpdateDTO();
+        u.setId(id);
+
         if(userUpdateDTO.getAuthority() == Authority.Admin) {
             if (userUpdateDTO.getName() != null && !userUpdateDTO.getName().isEmpty()) {
                 u.setName(userUpdateDTO.getName());
@@ -113,17 +114,18 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
-        UserViewDTO r =  userDelegator.update(userUpdateDTO);
+        UserViewDTO r =  userDelegator.update(u);
         return r != null;
     }
 
     //用户修改个人信息
     @Override
-    public Boolean update_s(@RequestBody UserUpdateDTO userUpdateDTO) {
+    public Boolean update_s(Long id, @RequestBody UserUpdateDTO userUpdateDTO) {
         if(userUpdateDTO == null){
             return null;
         }
         UserUpdateDTO u = new UserUpdateDTO();
+        u.setId(id);
 
         if (userUpdateDTO.getName()!= null && !userUpdateDTO.getName().isEmpty()) {
             u.setName(userUpdateDTO.getName());
@@ -135,7 +137,7 @@ public class UserServiceImpl implements UserService {
             u.setPhone(userUpdateDTO.getPhone());
         }
 
-        UserViewDTO r =  userDelegator.update(userUpdateDTO);
+        UserViewDTO r =  userDelegator.update(u);
         return r != null;
     }
 }
