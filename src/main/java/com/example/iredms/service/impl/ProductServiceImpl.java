@@ -136,9 +136,7 @@ public Boolean update(Long id, @RequestBody ProductIdUpdateDTO productIdUpdateDT
         return _productBlueprintLinkViewDTO!=null;
     }
     @Override
-    public List<ProductBlueprintLinkViewDTO> queryProductBlueprintLink(@RequestParam Long productId){
-        QueryRequestVo queryRequestVo = new QueryRequestVo();
-        queryRequestVo.addCondition("source.id", ConditionType.EQUAL, productId);
+    public List<ProductBlueprintLinkViewDTO> queryProductBlueprintLink(QueryRequestVo queryRequestVo){
         RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
         return productBlueprintLinkDelegator.find(queryRequestVo, pageVO);
     }
