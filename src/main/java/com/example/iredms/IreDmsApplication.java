@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @PropertySource("classpath:application.properties")
-@PropertySource("file:.env")
+//@PropertySource("file:.env")
 @ComponentScan(basePackages = {"com.huawei.innovation", "com.example.iredms"})
 public class IreDmsApplication {
 

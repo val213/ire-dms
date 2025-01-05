@@ -77,6 +77,10 @@ public class UserServiceImpl implements UserService {
         if (name!= null) {
             q.addCondition("name", ConditionType.EQUAL, name);
         }
+        if (productQueryDTO.getProductName() != null && !productQueryDTO.getProductName().isEmpty()) {
+//            log.info("productQueryDTO.getProductName():" + productQueryDTO.getProductName());
+            queryRequestVo.addCondition("productName", ConditionType.LIKE, productQueryDTO.getProductName());
+        }
         RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
         List<UserViewDTO> result;
         try {
