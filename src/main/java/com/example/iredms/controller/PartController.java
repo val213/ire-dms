@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.reflections.Reflections.log;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/part")
@@ -40,6 +43,7 @@ public class PartController {
 
     @PostMapping("/update")
     public BaseResponse<PartViewDTO> update(@RequestBody PartUpdateDTO partUpdateDTO) {
+        log.info(partUpdateDTO.toString());
         return ResultUtils.success(partService.updatePart(partUpdateDTO));
     }
     @PostMapping("/count")
