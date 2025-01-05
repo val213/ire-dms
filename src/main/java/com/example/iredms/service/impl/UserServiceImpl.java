@@ -74,12 +74,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserViewDTO> query(@PathVariable String name) {
         QueryRequestVo q = new QueryRequestVo();
+        //如果name为空则返回所有用户列表
+        if (name == null) {
+            q.addCondition("name", ConditionType.LIKE, name);
+        }
+        //如果name不为空则返回指定用户列表
         if (name!= null) {
             q.addCondition("name", ConditionType.EQUAL, name);
-        }
-        if (productQueryDTO.getProductName() != null && !productQueryDTO.getProductName().isEmpty()) {
-//            log.info("productQueryDTO.getProductName():" + productQueryDTO.getProductName());
-            queryRequestVo.addCondition("productName", ConditionType.LIKE, productQueryDTO.getProductName());
         }
         RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
         List<UserViewDTO> result;
