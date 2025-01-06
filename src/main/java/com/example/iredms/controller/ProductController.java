@@ -140,7 +140,7 @@ public class ProductController {
      */
     @RequestMapping("/part/create")
     public BaseResponse<Boolean> createProductPartLink(@RequestBody ProductPartLinkCreateDTO productPartLink) {
-        // 仅当产品处于概念化和设计阶段时，方可编辑
+        // 仅当产品处于原型开发阶段时，方可编辑
         if (productPartLink == null) {
             return ResultUtils.error(PARAMS_ERROR,"productPartLinkCreateDTO is null");
         }
@@ -153,7 +153,7 @@ public class ProductController {
         ProductQueryDTO productQueryDTO = new ProductQueryDTO();
         productQueryDTO.setId(productPartLink.getSource().getId());
         // 仅当产品处于概念化和设计阶段时，方可编辑
-        if (productService.query(productQueryDTO).get(0).getProductStage()== EngineeringStage.DesignStage){
+        if (productService.query(productQueryDTO).get(0).getProductStage()== EngineeringStage.DevelopmentStage){
             return ResultUtils.success(productService.createProductPartLink(productPartLink));
         }
         else {
@@ -171,7 +171,7 @@ public class ProductController {
     public BaseResponse<Integer> deleteProductPartLink(@RequestParam Long productId, @RequestParam Long partId){
         ProductQueryDTO productQueryDTO = new ProductQueryDTO();
         productQueryDTO.setId(productId);
-        if (productService.query(productQueryDTO).get(0).getProductStage()== EngineeringStage.DesignStage){
+        if (productService.query(productQueryDTO).get(0).getProductStage()== EngineeringStage.DevelopmentStage){
             return ResultUtils.success(productService.deleteProductPartLink(productId,partId ));
         }else {
             return ResultUtils.error(OPERATION_ERROR,"productStage is not DesignStage");
