@@ -101,21 +101,20 @@ public class UserServiceImpl implements UserService {
         UserUpdateDTO u = new UserUpdateDTO();
         u.setId(id);
 
-        if(userUpdateDTO.getAuthority() == Authority.Admin) {
-            if (userUpdateDTO.getName() != null && !userUpdateDTO.getName().isEmpty()) {
-                u.setName(userUpdateDTO.getName());
-            }
-            if (userUpdateDTO.getPhone() != null && !userUpdateDTO.getPhone().isEmpty()) {
-                u.setPhone(userUpdateDTO.getPhone());
-            }
-            if (userUpdateDTO.getAuthority() != null) {
-                try {
-                    u.setAuthority(userUpdateDTO.getAuthority());
-                } catch (IllegalArgumentException e) {
-                    throw new RuntimeException("Invalid productStage value: " + userUpdateDTO.getAuthority(), e);
-                }
+        if (userUpdateDTO.getName() != null && !userUpdateDTO.getName().isEmpty()) {
+            u.setName(userUpdateDTO.getName());
+        }
+        if (userUpdateDTO.getPhone() != null && !userUpdateDTO.getPhone().isEmpty()) {
+            u.setPhone(userUpdateDTO.getPhone());
+        }
+        if (userUpdateDTO.getAuthority() != null) {
+            try {
+                u.setAuthority(userUpdateDTO.getAuthority());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Invalid productStage value: " + userUpdateDTO.getAuthority(), e);
             }
         }
+
         UserViewDTO r =  userDelegator.update(u);
         return r != null;
     }
