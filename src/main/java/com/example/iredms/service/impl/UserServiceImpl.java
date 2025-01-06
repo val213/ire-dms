@@ -75,11 +75,8 @@ public class UserServiceImpl implements UserService {
     public List<UserViewDTO> query(@PathVariable String name) {
         QueryRequestVo q = new QueryRequestVo();
         //如果name为空则返回所有用户列表
-        if (name == null) {
-            q.addCondition("name", ConditionType.LIKE, name);
-        }
         //如果name不为空则返回指定用户列表
-        if (name!= null) {
+        if (name!= null && !name.isEmpty()) {
             q.addCondition("name", ConditionType.EQUAL, name);
         }
         RDMPageVO pageVO = new RDMPageVO(1, Integer.MAX_VALUE);
@@ -104,21 +101,20 @@ public class UserServiceImpl implements UserService {
         UserUpdateDTO u = new UserUpdateDTO();
         u.setId(id);
 
-        if(userUpdateDTO.getAuthority() == Authority.Admin) {
-            if (userUpdateDTO.getName() != null && !userUpdateDTO.getName().isEmpty()) {
-                u.setName(userUpdateDTO.getName());
-            }
-            if (userUpdateDTO.getPhone() != null && !userUpdateDTO.getPhone().isEmpty()) {
-                u.setPhone(userUpdateDTO.getPhone());
-            }
-            if (userUpdateDTO.getAuthority() != null) {
-                try {
-                    u.setAuthority(userUpdateDTO.getAuthority());
-                } catch (IllegalArgumentException e) {
-                    throw new RuntimeException("Invalid productStage value: " + userUpdateDTO.getAuthority(), e);
-                }
+        if (userUpdateDTO.getName() != null && !userUpdateDTO.getName().isEmpty()) {
+            u.setName(userUpdateDTO.getName());
+        }
+        if (userUpdateDTO.getPhone() != null && !userUpdateDTO.getPhone().isEmpty()) {
+            u.setPhone(userUpdateDTO.getPhone());
+        }
+        if (userUpdateDTO.getAuthority() != null) {
+            try {
+                u.setAuthority(userUpdateDTO.getAuthority());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Invalid productStage value: " + userUpdateDTO.getAuthority(), e);
             }
         }
+
         UserViewDTO r =  userDelegator.update(u);
         return r != null;
     }
